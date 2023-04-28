@@ -38,7 +38,7 @@ DELETE FROM todo WHERE id = 3;
 
 -- [DCL]
 -- MySQL 사용자 추가하기
-CREATE USER 'user'@'%' IDENTIFIED BY '1234'; 
+CREATE USER 'user'@'%' IDENTIFIED BY '1234';
 CREATE USER 'user'@'%' IDENTIFIED WITH mysql_native_password BY '1234';
 -- user 계정에 DB 권한 부여 (모든 DB에 접근 가능하도록)
 GRANT ALL PRIVILEGES ON *.* TO 'user'@'%' WITH GRANT OPTION;

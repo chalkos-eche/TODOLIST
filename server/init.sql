@@ -2,6 +2,7 @@
 -- 데이터베이스 목록 보기
 SHOW databases;
 
+CREATE DATABASE kdt;
 -- 데이터베이스 선택
 USE kdt;
 

@@ -1,4 +1,45 @@
 import React, { useState } from "react";
+import styled from 'styled-components';
+import {RiAddFill} from 'react-icons/ri';
+
+const AddTodoWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+`
+const AddTodoInput = styled.input`
+border-radius: 0.8rem;
+  border: none;
+  height: 2.4rem;
+  padding: 0.8rem 2.4rem;
+  font-size: 1.6rem;
+  margin: 0.8rem;
+  box-shadow: .1rem .15rem 0.2rem 0 rgba(0,0,0,0.1);
+  background-color: #fff;
+  color: #4caf50;
+  font-weight: 900;
+  flex: 1 1 0;
+  width: 100%;
+  &::placeholder {
+    font-weight: 300;
+  }
+`
+
+const AddButton = styled.button`
+padding: 0.8rem;
+  margin: 0.8rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: #fff;
+  box-shadow: .1rem .15rem 0.2rem 0 rgba(0,0,0,0.1);
+  color: #4CAF50;
+  flex: 0 1 0;
+`
 
 const AddTodo = ({ addItem }) => {
   // 리액트 특성상 여기서 함수 실행후 부모 컴포넌트의 스테이트 값을 넘길수가 없어서
@@ -19,16 +60,16 @@ const AddTodo = ({ addItem }) => {
     if (e.key === "Enter") onButtonClick();
   };
   return (
-    <div className="AddTodo">
-      <input
+    <AddTodoWrapper className="AddTodo">
+      <AddTodoInput
         type="text"
-        placeholder="add your new todo here"
+        placeholder="입력하기"
         value={todoItem.title}
         onChange={(e) => setTodoItem({ title: e.target.value })}
         onKeyPress={onEnterKeyDown}
       />
-      <button onClick={onButtonClick}>ADD</button>
-    </div>
+      <AddButton onClick={onButtonClick}><RiAddFill/></AddButton>
+    </AddTodoWrapper>
   );
 };
 

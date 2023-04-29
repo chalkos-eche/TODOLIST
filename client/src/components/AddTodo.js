@@ -16,13 +16,15 @@ border-radius: 0.8rem;
   font-size: 1.6rem;
   margin: 0.8rem;
   box-shadow: .1rem .15rem 0.2rem 0 rgba(0,0,0,0.1);
-  background-color: #fff;
-  color: #4caf50;
+  color: white;
   font-weight: 900;
   flex: 1 1 0;
   width: 100%;
+  background-color: #4caf50;
+  
   &::placeholder {
-    font-weight: 300;
+    font-weight: 900;
+    color: white;
   }
 `
 
@@ -51,22 +53,27 @@ const AddTodo = ({ addItem }) => {
     title: "", // done 은 false id 는 autoincrement
   });
   const onButtonClick = () => {
+    //빈값 추가안되게
+    if(!todoItem.title) return;
     //1. props addItem 함수
     addItem(todoItem);
     // 2. input 초기화
     setTodoItem({ title: "" });
   };
   const onEnterKeyDown = (e) => {
-    if (e.key === "Enter") onButtonClick();
+    // console.log(e)
+    if (e.key === "Enter")
+      onButtonClick();
   };
   return (
     <AddTodoWrapper className="AddTodo">
       <AddTodoInput
         type="text"
-        placeholder="입력하기"
+        placeholder="오늘은..."
         value={todoItem.title}
         onChange={(e) => setTodoItem({ title: e.target.value })}
         onKeyPress={onEnterKeyDown}
+        autoFocus
       />
       <AddButton onClick={onButtonClick}><RiAddFill/></AddButton>
     </AddTodoWrapper>

@@ -13,6 +13,22 @@ const Checkbox = styled.input`
   position: absolute;
   left: -1000%;
 `
+const TodoTitle = styled.input`
+flex-grow: 7;
+  margin: 0.4rem;
+  font-size: 1.2rem;
+  outline: none;
+  border: none;
+  font-weight: 900;
+  width: 100%;
+  
+  //&:focus {
+  //  transition: 0.4s all;
+  //  background-color: #4caf50;
+  //}
+
+  
+`
 const TodoItem = styled.div`
   border-radius: 0.8rem;
   display: flex;
@@ -25,23 +41,33 @@ const TodoItem = styled.div`
   flex: 1 1 0;
   justify-content: center;
   align-items: center;
-`
-const TodoTitle = styled.input`
-flex-grow: 7;
-  margin: 0.4rem;
-  font-size: 1.2rem;
-  outline: none;
-  border: none;
-  font-weight: 900;
-  letter-spacing: 0.2rem;
-  width: 100%;
   
+  ${TodoTitle}:focus ~ & {
+    transition: 0.4s all;
+    background-color: #4caf50;
+  }
+  &:hover {
+    transition: 0.4s all;
+    background-color: #4caf50;
+  }
+  &:hover > ${TodoTitle} {
+    transition: 0.4s all;
+    background-color: #4caf50;
+  }
+
 `
+
 const DeleteButton = styled.button`
 margin: 0.4rem;
   flex-grow: 1;
   background-color: transparent;
   height: 100%;
+  
+  &:hover {
+    transition: 0.4s background;
+    background-color: #eee4;
+    border-radius: 50%;
+  }
   
 `
 
@@ -56,6 +82,7 @@ const Label = styled.label`
   box-shadow: .1rem .15rem 0.2rem 0 rgba(0,0,0,0.1);
   position: relative;
   transition: 0.6s all ;
+  cursor: pointer;
 
   ${Checkbox}:checked + &:after {
     left: calc(100% - 1.2rem);}
@@ -82,7 +109,7 @@ const Label = styled.label`
 `
 
 
-const Todo = ({ item, deleteItem }) => {
+const Todo = ({ item, deleteItem,updateItem }) => {
   //item {done:false,id;1,title:'test'}
   const [todoItem, setTodoItem] = useState(item);
   const [readOnly, setReadOnly] = useState(true);
@@ -94,7 +121,10 @@ const Todo = ({ item, deleteItem }) => {
     setReadOnly(false);
   };
   const enterKeyEventHandler = (e) => {
-    if (e.key === "Enter") setReadOnly(true);
+    if (e.key === "Enter") {setReadOnly(true);
+    updateItem(todoItem)
+    }
+
   };
   // 유저가 키보드 입력 할 때마다 item 의 값을 바꿔준다.
   const editEventHandler = (e) => {
@@ -107,16 +137,25 @@ const Todo = ({ item, deleteItem }) => {
   const checkBoxEventHandler = (e) => {
     const { done, ...rest } = todoItem;
     // todoItem.done = !todoItem.done;
-    setTodoItem({
+    const updatedItem = {
       done: e.target.checked,
       ...rest,
-    });
-    console.log(todoItem);
+    }
+    setTodoItem(updatedItem);
+    updateItem(updatedItem); // 수정 2 - checkbox input 에서 check 여부변경시 수정
   };
   return (
+
     <Article className="todo">
-      <TodoItem>
-        <DeleteButton onClick={onDeleteButtonClick}><RiCloseFill/></DeleteButton>
+      <TodoItem style = {todoItem.done ? {
+      backgroundColor:'#4caf50'} :
+          {backgroundColor:'#fff'}
+      }>
+        <DeleteButton onClick={onDeleteButtonClick
+        }
+         style=  {todoItem.done ? {color:'#fff'
+            } : {color:'#080808'}}
+        ><RiCloseFill/></DeleteButton>
         <TodoTitle
             type="text"
             value={todoItem.title}
@@ -124,6 +163,9 @@ const Todo = ({ item, deleteItem }) => {
             onKeyDown={enterKeyEventHandler}
             readOnly={readOnly}
             onChange={editEventHandler}
+            style = {todoItem.done ? {textDecoration :'line-through',backgroundColor:'#4caf50',color:'#fff'
+      } : {textDecoration:'none',backgroundColor:'#fff',color:'#080808'}
+        }
         />
       </TodoItem>
       <Checkbox

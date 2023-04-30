@@ -7,6 +7,13 @@ const AddTodoWrapper = styled.div`
   display: flex;
   justify-content: left;
   align-items: center;
+  padding-bottom: 1.6rem ;
+  margin-bottom: 1.6rem;
+  border-bottom: 0.1rem solid #fff1;
+  //border-radius: 1rem;
+  box-shadow: 0 1.6rem 1.6rem -2.8rem rgba(0,0,0,1);
+  
+
 `
 const AddTodoInput = styled.input`
 border-radius: 0.8rem;
@@ -20,12 +27,12 @@ border-radius: 0.8rem;
   font-weight: 900;
   flex: 1 1 0;
   width: 100%;
-  background-color: #4caf50;
+  background-color: #40b200;
+
   
   &::placeholder {
     font-weight: 900;
     color: white;
-  }
 `
 
 const AddButton = styled.button`
@@ -39,7 +46,7 @@ padding: 0.8rem;
   cursor: pointer;
   background-color: #fff;
   box-shadow: .1rem .15rem 0.2rem 0 rgba(0,0,0,0.1);
-  color: #4CAF50;
+  color: #40b200;
   flex: 0 1 0;
 `
 

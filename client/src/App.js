@@ -59,20 +59,22 @@ const SubTitle =styled.h2`
   background-color: #0004;
   padding: 0.4rem 0.8rem;
   margin: 0.8rem;
-  border-radius: 1.2rem;
+  border-radius: 0.8rem;
+  box-shadow: inset .05rem .05rem .5em 0.05rem rgba(0,0,0,0.1);
   font-weight: 300;
 `
-const Total = styled.span`
-  display: inline-block;
+const Total = styled.p`
+  text-align: left;
+  margin-left: 1.2rem;
   width: 100%;
-  position: absolute;
-  margin-left: 0.5rem;
-  top: 0.4rem;
-  left: 100%;
   color: #080808;
-  font-weight: 900;
-
+  font-weight:700;
+  font-size: 0.8rem;
+  //background-color: orange;
+  
 `
+const Div = styled.div`
+width: 100%`
 const Wrapper = styled.div`
 display: flex;
   flex-wrap: wrap;
@@ -98,19 +100,24 @@ display: flex;
 function App() {
   const [todoItems, setTodoItems] = useState([
   ]);
-  const [time,setTime] = useState('');
+  const [time,setTime] = useState('00:00');
   const [today,setToday] = useState('');
+  const [completed,setCompleted] = useState([]);
 
   useEffect(() => {
     // console.log('mount 완료');
     const getTodos = async () => {
       const res = await Axios.get(`${API_BASE_URL}/api/todos`);
       // console.log(res);
-      setTodoItems(res.data.sort((x,y)=>y.id - x.id));
+      // setTodoItems(res.data.sort((x,y)=>y.id - x.id));
+      setTodoItems(res.data)
+      console.log(res.data)
+      const complete = res.data.filter((item)=>item.done)
+      setCompleted(complete)
+    console.log('first',complete)
     };
-
     getTodos();
-  }, [todoItems]);
+  }, []);
 
   // Todo 추가하는 함수 ( 버튼은 자식 컴포넌트에 있음)
   const addItem = async(newItem) => {
@@ -123,8 +130,7 @@ function App() {
     // newItem = {title: 'xxx',}
     const res = await Axios.post(`${ API_BASE_URL }/api/todo`, newItem)
     // console.log(res)
-    setTodoItems([...todoItems, res.data]);
-
+    setTodoItems([res.data,...todoItems]);
   };
 
   // Todo 를 삭제하는 함수 ( 버튼은 자식 컴포넌트에 있음 )
@@ -143,7 +149,11 @@ function App() {
   // 2) 변경된 내용을 화면에 다시 출력
   const updateItem = async (targetItem)=>{
     await Axios.patch(`${ API_BASE_URL }/api/todo/${targetItem.id}`,targetItem);
-
+    if(targetItem.done){
+      setCompleted([...completed,targetItem]);
+    } else {
+   setCompleted(completed.filter((item)=>item.id !== targetItem.id));}
+    console.log('completed',completed)
   }
   const currentTime = () => {
     const date = new Date();
@@ -153,6 +163,8 @@ function App() {
     // const s = String(date.getSeconds()).padStart(2,"0");
     setTime(`${h}:${m}`)
   }
+  //
+  // useEffect( )
 
   // 시간 렌더링
   useEffect( ()=>{
@@ -172,9 +184,11 @@ setToday(`${today2}월${today}일`)
     <Wrapper>
       <GlobalStyle/>
       <Title>오늘은 무엇을 하시나요 </Title>
-      <SubTitle>오늘은 {today}, 현재 {time} 입니다.
-      <Total>현재 {todoItems.length}개의 할일</Total>
-      </SubTitle>
+      <SubTitle>{today}, 시간은 {time} 입니다.</SubTitle>
+      <Div>
+      <Total>{todoItems.length}개의 할일 에서,
+        <span style={{color:'#40b200',fontWeight:'900'}}> 오늘 총 {completed.length}개</span> 끝내셨습니다. </Total>
+      </Div>
       <AddTodo addItem={addItem} />
       {/*Todo ITEM 목록 컴포넌트*/}
       { !todoItems?.length ? <NothingTodo/> :

@@ -113,6 +113,7 @@ const Todo = ({ item, deleteItem,updateItem }) => {
   //item {done:false,id;1,title:'test'}
   const [todoItem, setTodoItem] = useState(item);
   const [readOnly, setReadOnly] = useState(true);
+  // const [done,setDone] =useState([])
   const onDeleteButtonClick = () => {
     deleteItem(todoItem);
   };
@@ -143,6 +144,7 @@ const Todo = ({ item, deleteItem,updateItem }) => {
     }
     setTodoItem(updatedItem);
     updateItem(updatedItem); // 수정 2 - checkbox input 에서 check 여부변경시 수정
+    // if (done) setDone(updatedItem.done);
   };
   return (
 
